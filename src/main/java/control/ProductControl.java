@@ -38,14 +38,17 @@ public class ProductControl extends HttpServlet {
 			throws ServletException, IOException {
 
 		if (request.getParameter("action") != null && request.getParameter("action").compareTo("dettaglio") == 0) {
-			String codiceStr = request.getParameter("codice");
-			int codice = Integer.parseInt(codiceStr);
-			
-			ProductModel model = new ProductModel();
 			try {
+				String codiceStr = request.getParameter("codice");
+				int codice = Integer.parseInt(codiceStr);
+				
+				ProductModel model = new ProductModel();
+			
 				ProductBean prodotto = model.doRetrieveByKey(codice);
 				request.setAttribute("prodottoDettaglio", prodotto);
 			} catch (SQLException e) {
+				e.printStackTrace();
+			}catch (Exception e){
 				e.printStackTrace();
 			}
 			finally {
