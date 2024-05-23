@@ -41,6 +41,19 @@ public class Vendita extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    
+    private static boolean checkString(String input){
+    	char c;
+    	for(int i = 0; i<input.length(); i++){
+    		c = input.charAt(i);
+    		if(c == '<' || c == '>' || c =='"' || c == '/')
+    			return false;
+    	}
+    	if(input.contains("&lt;") || input.contains("&gt;") || input.contains("&quot;"))
+    		return false;
+    	return true;
+    }
+    
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		ProductBean product = new ProductBean();
 		product.setEmail((String) request.getSession().getAttribute("email"));
@@ -59,6 +72,10 @@ public class Vendita extends HttpServlet {
 		                    product.setImmagine(name);
 		                }
 		                else {
+		                	if(!checkString(item.getString())){
+		                		response.sendRedirect("vendita.jsp");
+		                		return;
+		                	}
 		                	if (item.getFieldName().compareTo("nome") == 0) {
 		                		product.setNome(item.getString());
 		                	}
